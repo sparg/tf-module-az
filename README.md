@@ -24,7 +24,7 @@
 Certificate
 ```hcl
 module "certificates" {
-  source    = "../modules/certificates"
+  source = "git@github.com:Sparg/tf-module-az.git?ref=<release-tag>/certificates"
 
   algorithm = var.algorithm
   rsa_bits  = var.rsa_bits
@@ -34,7 +34,7 @@ module "certificates" {
 Networking
 ```hcl
 module "network" {
-  source                = "../modules/network"
+  source = "git@github.com:Sparg/tf-module-az.git?ref=<release-tag>/network"
 
   address_space         = var.address_space
   subnet_address_prefix = var.subnet_address_prefix
@@ -48,7 +48,7 @@ module "network" {
 Virtual Machine
 ```hcl
 module "virtual_machine" {
-  source     = "../modules/vm"
+  source = "git@github.com:Sparg/tf-module-az.git?ref=<release-tag>/vm"
 
   instance            = var.instance
   resource_group_name = var.resource_group
@@ -69,6 +69,20 @@ module "virtual_machine" {
   subnet_id = var.subnet_id
 }
 ```
+
+### Outputs module
+
+Certificate
+- `public_ip`
+- `private_key`
+
+Networking
+- `subnet_id`
+
+Virtual Machine
+- `id`
+- `network_interface_id`
+- `public_ip_address`
 
 ### Note:
 

@@ -1,9 +1,8 @@
 # Create the Linux virtual machine
 resource "azurerm_linux_virtual_machine" "tf-vm-tg" {
-  # name                = var.vm_name
-  name                = "vm-${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-${var.instance}"
-  resource_group_name = var.resource_group_name # data.azurerm_resource_group.tf-vm-tg.name
-  location            = var.location            # data.azurerm_resource_group.tf-vm-tg.location
+  name                = "${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-vm-${var.instance}"
+  resource_group_name = var.resource_group_name
+  location            = var.location
   size                = var.vm_size
   admin_username      = var.admin_username
 
@@ -40,8 +39,7 @@ resource "azurerm_linux_virtual_machine" "tf-vm-tg" {
 
 # Create a public IP
 resource "azurerm_public_ip" "tf-vm-tg" {
-  # name                = "public-ip-linux-vm"
-  name                = "pip-${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-${var.instance}"
+  name                = "${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-pip-${var.instance}"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static" # "Dynamic"
@@ -50,15 +48,13 @@ resource "azurerm_public_ip" "tf-vm-tg" {
 
 # Create a network interface
 resource "azurerm_network_interface" "tf-vm-tg" {
-  # name                = var.network_interface_name
-  name                = "nw-${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-${var.instance}"
+  name                = "${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-nw-${var.instance}"
   location            = var.location
   resource_group_name = var.resource_group_name
 
   ip_configuration {
-    # name                          = "ipconfig1"
-    name                          = "ipconfig-${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-${var.instance}"
-    subnet_id                     = var.subnet_id # azurerm_subnet.tf-vm-tg.id
+    name                          = "${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-ipconfig-${var.instance}"
+    subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.tf-vm-tg.id
   }
@@ -66,8 +62,7 @@ resource "azurerm_network_interface" "tf-vm-tg" {
 
 # Create a network security group (NSG) to allow SSH traffic (port 22)
 resource "azurerm_network_security_group" "tf-vm-tg" {
-  # name                = var.nsg_name
-  name                = "nsg-${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-${var.instance}"
+  name                = "${var.resource_group_name}-${var.environment}-${lower(replace(var.location, " ", ""))}-nsg-${var.instance}"
   location            = var.location
   resource_group_name = var.resource_group_name
 
